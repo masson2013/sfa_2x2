@@ -563,9 +563,9 @@ sfa_bif u_bif06(
 );
 
 sfa_Switch u_Switch10(
-  .sn_tready      (switch00_mn_tready      ),
-  .sn_tvalid      (switch00_mn_tvalid      ),
-  .sn_tdata       (switch00_mn_tdata       ),
+  .sn_tready      (switch00_ms_tready      ),
+  .sn_tvalid      (switch00_ms_tvalid      ),
+  .sn_tdata       (switch00_ms_tdata       ),
   .se_tready      (switch11_mw_tready      ),
   .se_tvalid      (switch11_mw_tvalid      ),
   .se_tdata       (switch11_mw_tdata       ),

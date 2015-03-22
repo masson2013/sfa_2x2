@@ -41,17 +41,17 @@ module sfa_vadd (
   reg [31 : 0] ValueB      ;
   reg [31 : 0] ValueC      ;
 
-  reg [ 3 : 0] i           ;
+  reg [15 : 0] i           ;
 
-  reg r_sIn1_tready;
-  reg r_sIn2_tready;
+  // reg r_sIn1_tready;
+  // reg r_sIn2_tready;
 
-  assign sIn1_tready = r_sIn1_tready;
-  assign sIn2_tready = r_sIn2_tready;
+  // assign sIn1_tready = r_sIn1_tready;
+  // assign sIn2_tready = r_sIn2_tready;
 
   assign sCMD_tready   = (state == Fetch)      ;
-  // assign sIn1_tready   = ((state == Fetch) || (state == Decode) || (state == Addition));
-  // assign sIn2_tready   = ((state == Fetch) || (state == Decode) || (state == Addition));
+  assign sIn1_tready   = mOut_tready;
+  assign sIn2_tready   = mOut_tready;
   assign mRet_tvalid   = (state == Write_Back) ;
   assign mOut_tdata    = ValueC                ;
   assign mOut_tvalid   = (state == AXIs_SEND)  ;
@@ -61,15 +61,15 @@ module sfa_vadd (
   always @(posedge ACLK)
   begin
     if(!ARESETN) begin
-      r_sIn1_tready = 0;
-      r_sIn2_tready = 0;
+      // r_sIn1_tready = 0;
+      // r_sIn2_tready = 0;
       state <= Fetch;
     end
     else begin
       case (state)
-        Fetch: begin
+        Fetch: begin // 16
           if (sCMD_tvalid == 1) begin
-            i            <= 4'd0;
+            i            <= 16'd0;
             instruction  <= sCMD_tdata;
             state        <= Decode;
           end
@@ -79,11 +79,11 @@ module sfa_vadd (
         end
 
 
-        Decode: begin
+        Decode: begin // 8
           if (instruction == 32'd1) begin
-            if (i < PR_SIZE - 1) begin
-              r_sIn1_tready <= 1;
-              r_sIn2_tready <= 1;
+            if (i < PR_SIZE) begin
+              // r_sIn1_tready <= 1;
+              // r_sIn2_tready <= 1;
               if (sIn1_tvalid == 1 && sIn2_tvalid == 1) begin
                 ValueC <= sIn1_tdata + sIn2_tdata;
                 i      <= i + 1           ;
@@ -94,8 +94,8 @@ module sfa_vadd (
               end
             end
             else begin
-              r_sIn1_tready <= 0;
-              r_sIn2_tready <= 0;
+              // r_sIn1_tready <= 0;
+              // r_sIn2_tready <= 0;
               ret      <= 32'd10    ;
               state    <= Write_Back;
             end
@@ -111,7 +111,7 @@ module sfa_vadd (
         //   state  <= AXIs_SEND       ;
         // end
 
-        AXIs_SEND: begin
+        AXIs_SEND: begin // 2
           if (mOut_tready == 1) begin
             state <= Decode;
           end

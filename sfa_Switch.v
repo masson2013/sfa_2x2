@@ -107,11 +107,16 @@ module sfa_Switch(
 assign    mIn1_tvalid   = In1_mi_tvalid ;
 assign    mIn1_tdata    = In1_mi_tdata  ;
 
-assign    mIn2_tvalid   = In2_mi_tvalid ;
-assign    mIn2_tdata    = In2_mi_tdata  ;
-
 assign    mi_tready_tmp = MUXCONF ? mIn1_tready : In1_mi_tready;
-assign    In2_mi_tready = mIn2_tready;
+
+assign sn_tready = (MUXCONF == 1'b0) ? In1_sn_tready : (IN1CONF == 2'b00) ? In1_sn_tready : (IN2CONF == 2'b00) ? In2_sn_tready : 1'b0;
+assign se_tready = (MUXCONF == 1'b0) ? In1_se_tready : (IN1CONF == 2'b01) ? In1_se_tready : (IN2CONF == 2'b01) ? In2_se_tready : 1'b0;
+assign ss_tready = (MUXCONF == 1'b0) ? In1_ss_tready : (IN1CONF == 2'b10) ? In1_ss_tready : (IN2CONF == 2'b10) ? In2_ss_tready : 1'b0;
+assign sw_tready = (MUXCONF == 1'b0) ? In1_sw_tready : (IN1CONF == 2'b11) ? In1_sw_tready : (IN2CONF == 2'b11) ? In2_sw_tready : 1'b0;
+
+// assign    mIn2_tvalid   = In2_mi_tvalid ;
+// assign    mIn2_tdata    = In2_mi_tdata  ;
+// assign    In2_mi_tready = mIn2_tready   ;
 
 sfa_control u_Control(
   .sCMD_tready    (sCMD_tready    ) ,
@@ -144,11 +149,6 @@ sfa_control u_Control(
   .ACLK           (ACLK           ) ,
   .ARESETN        (ARESETN        )
 );
-
-assign sn_tready = In2_sn_tready | In1_sn_tready;
-assign se_tready = In2_se_tready | In1_se_tready;
-assign ss_tready = In2_ss_tready | In1_ss_tready;
-assign sw_tready = In2_sw_tready | In1_sw_tready;
 
 sfa_inSwitch u_inSwitch_In1(
   .CONF           (IN1CONF        ) ,
@@ -183,9 +183,9 @@ sfa_inSwitch u_inSwitch_In2(
   .sw_tready      (In2_sw_tready  ) ,
   .sw_tvalid      (sw_tvalid      ) ,
   .sw_tdata       (sw_tdata       ) ,
-  .mi_tready      (In2_mi_tready  ) ,
-  .mi_tvalid      (In2_mi_tvalid  ) ,
-  .mi_tdata       (In2_mi_tdata   )
+  .mi_tready      (mIn2_tready    ) ,
+  .mi_tvalid      (mIn2_tvalid    ) ,
+  .mi_tdata       (mIn2_tdata     )
 );
 
 axis_2to1_mux u_MUX(

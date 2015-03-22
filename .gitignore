@@ -1,3 +1,7 @@
 *.vcd
 design
 a.out
+.DS_Store
+*.gtkw
+*.v~
+

@@ -3,23 +3,35 @@
 module axis_2to1_mux (
   input   wire            CONF      ,
 
-  output  wire            sA_tready ,
+  output  reg             sA_tready ,
   input   wire            sA_tvalid ,
   input   wire  [31 : 0]  sA_tdata  ,
 
-  output  wire            sB_tready ,
+  output  reg             sB_tready ,
   input   wire            sB_tvalid ,
   input   wire  [31 : 0]  sB_tdata  ,
 
   input   wire            mi_tready ,
-  output  wire            mi_tvalid , // why reg? change to wire
-  output  wire   [31 : 0] mi_tdata    // why reg? change to wire
+  output  reg             mi_tvalid ,
+  output  reg    [31 : 0] mi_tdata
 );
 
-assign mi_tdata  = (CONF == 0) ? sA_tdata  : sB_tdata  ;
-assign mi_tvalid = (CONF == 0) ? sA_tvalid : sB_tvalid ;
+always @(CONF or sA_tvalid or sA_tdata  or sB_tvalid or sB_tdata  or mi_tready)
+begin
+  case (CONF)
+    1'b0: begin
+      sA_tready = mi_tready ;
+      sB_tready = 1'b0      ;
+      mi_tvalid = sA_tvalid ;
+      mi_tdata  = sA_tdata  ;
+    end
 
-assign sA_tready = (CONF == 0) ? mi_tready : 1'bz      ;
-assign sB_tready = (CONF == 1) ? mi_tready : 1'bz      ;
-
+    1'b1: begin
+      sA_tready = 1'b0      ;
+      sB_tready = mi_tready ;
+      mi_tvalid = sB_tvalid ;
+      mi_tdata  = sB_tdata  ;
+    end
+  endcase
+end
 endmodule
