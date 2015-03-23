@@ -169,7 +169,7 @@ wire  [31 : 0]   switch11_mPRCMD_tdata  ;
 initial begin
   $dumpfile("design.vcd");
   $dumpvars(0,sfa_2x2_tb);
-  #3000 $finish;
+  #5000 $finish;
 end
 
 initial begin
@@ -183,7 +183,10 @@ initial begin
 end
 
 initial begin
+        switch00_mRet_tready = 1;
+        switch01_mRet_tready = 1;
         switch00_sCMD_tvalid = 0;
+        switch01_sCMD_tvalid = 0;
 end
 
 initial begin
@@ -282,9 +285,207 @@ initial begin
   #20   switch00_sCMD_tdata  = 32'h00080000;
         switch00_sCMD_tvalid = 1;
   #10   switch00_sCMD_tvalid = 0;
-
 end
-
+/////////////////////////////////////////////
+// Second Round
+/////////////////////////////////////////////
+initial begin
+  // // Set PR SIZE
+  // #150  switch00_sCMD_tdata  = 32'h00100010;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set INDEX BC1
+  // #20   switch00_sCMD_tdata  = 32'h00110000;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set SIZE BC1
+  // #20   switch00_sCMD_tdata  = 32'h00120010;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set STRIDE BC1
+  // #20   switch00_sCMD_tdata  = 32'h00130001;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set MODE BC1
+  // #20   switch00_sCMD_tdata  = 32'h00140000;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set INDEX BC2
+  // #20   switch00_sCMD_tdata  = 32'h00210000;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set SIZE BC2
+  // #20   switch00_sCMD_tdata  = 32'h00220010;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set STRIDE BC2
+  // #20   switch00_sCMD_tdata  = 32'h00230001;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // // Set MODE BC2
+  // #20   switch00_sCMD_tdata  = 32'h00240000;
+  //       switch00_sCMD_tvalid = 1;
+  // #10   switch00_sCMD_tvalid = 0;
+  // //////////////////////////////////////////
+  // // Set PR SIZE
+  // #150  switch01_sCMD_tdata  = 32'h00100000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set INDEX BC1
+  // #20   switch01_sCMD_tdata  = 32'h00110000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set SIZE BC1
+  // #20   switch01_sCMD_tdata  = 32'h00120010;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set STRIDE BC1
+  // #20   switch01_sCMD_tdata  = 32'h00130001;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set MODE BC1
+  // #20   switch01_sCMD_tdata  = 32'h00140001;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set INDEX BC2
+  // #20   switch01_sCMD_tdata  = 32'h00210000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set SIZE BC2
+  // #20   switch01_sCMD_tdata  = 32'h00220000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set STRIDE BC2
+  // #20   switch01_sCMD_tdata  = 32'h00230000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  // // Set MODE BC2
+  // #20   switch01_sCMD_tdata  = 32'h00240000;
+  //       switch01_sCMD_tvalid = 1;
+  // #10   switch01_sCMD_tvalid = 0;
+  //////////////////////////////////////////
+  // Set Switch 00
+  #2000 switch00_sCMD_tdata  = 32'h00010C05;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set Switch 01
+  #20   switch01_sCMD_tdata  = 32'h00013000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  //////////////////////////////////////////
+  // START 00
+  #20   switch00_sCMD_tdata  = 32'h00030000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // START 01
+  #10   switch01_sCMD_tdata  = 32'h00030000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // DONE
+  #20   switch00_sCMD_tdata  = 32'h00080000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+end
+/////////////////////////////////////////////
+// Third Round
+/////////////////////////////////////////////
+initial begin
+  // Set PR SIZE
+  #2600 switch00_sCMD_tdata  = 32'h00100010;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set INDEX BC1
+  #20   switch00_sCMD_tdata  = 32'h00110000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set SIZE BC1
+  #20   switch00_sCMD_tdata  = 32'h00120010;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set STRIDE BC1
+  #20   switch00_sCMD_tdata  = 32'h00130001;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set MODE BC1
+  #20   switch00_sCMD_tdata  = 32'h00140000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set INDEX BC2
+  #20   switch00_sCMD_tdata  = 32'h00210000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set SIZE BC2
+  #20   switch00_sCMD_tdata  = 32'h00220010;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set STRIDE BC2
+  #20   switch00_sCMD_tdata  = 32'h00230001;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set MODE BC2
+  #20   switch00_sCMD_tdata  = 32'h00240000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  //////////////////////////////////////////
+  // Set PR SIZE
+  #150  switch01_sCMD_tdata  = 32'h00100000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set INDEX BC1
+  #20   switch01_sCMD_tdata  = 32'h00110000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set SIZE BC1
+  #20   switch01_sCMD_tdata  = 32'h00120010;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set STRIDE BC1
+  #20   switch01_sCMD_tdata  = 32'h00130001;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set MODE BC1
+  #20   switch01_sCMD_tdata  = 32'h00140001;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set INDEX BC2
+  #20   switch01_sCMD_tdata  = 32'h00210000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set SIZE BC2
+  #20   switch01_sCMD_tdata  = 32'h00220000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set STRIDE BC2
+  #20   switch01_sCMD_tdata  = 32'h00230000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // Set MODE BC2
+  #20   switch01_sCMD_tdata  = 32'h00240000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  //////////////////////////////////////////
+  // Set Switch 00
+  #20   switch00_sCMD_tdata  = 32'h00010C05;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // Set Switch 01
+  #20   switch01_sCMD_tdata  = 32'h00013000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  //////////////////////////////////////////
+  // START 00
+  #20   switch00_sCMD_tdata  = 32'h00030000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+  // START 01
+  #10   switch01_sCMD_tdata  = 32'h00030000;
+        switch01_sCMD_tvalid = 1;
+  #10   switch01_sCMD_tvalid = 0;
+  // DONE
+  #20   switch00_sCMD_tdata  = 32'h00080000;
+        switch00_sCMD_tvalid = 1;
+  #10   switch00_sCMD_tvalid = 0;
+end
 
 
 

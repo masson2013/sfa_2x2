@@ -1,5 +1,40 @@
 `timescale 1 ns / 1 ps
+module sfa_outSwitch (
+  input   wire  [ 0 : 1]   CONF      ,
 
+  output  wire              si_tready ,
+  input   wire             si_tvalid ,
+  input   wire  [31 : 0]   si_tdata  ,
+
+  input   wire             mn_tready ,
+  output  wire              mn_tvalid ,
+  output  wire    [31 : 0]  mn_tdata  ,
+
+  input   wire             me_tready ,
+  output  wire              me_tvalid ,
+  output  wire    [31 : 0]  me_tdata  ,
+
+  input   wire             ms_tready ,
+  output  wire              ms_tvalid ,
+  output  wire    [31 : 0]  ms_tdata  ,
+
+  input   wire             mw_tready ,
+  output  wire              mw_tvalid ,
+  output  wire    [31 : 0]  mw_tdata
+);
+  assign si_tready = CONF[1] ? (CONF[0] ? (mw_tready) : (ms_tready)) : (CONF[0] ? (me_tready) : (mn_tready));
+
+  assign mn_tvalid = (CONF == 2'h00) ? si_tvalid : 1'b0;
+  assign me_tvalid = (CONF == 2'h01) ? si_tvalid : 1'b0;
+  assign ms_tvalid = (CONF == 2'h10) ? si_tvalid : 1'b0;
+  assign mw_tvalid = (CONF == 2'h11) ? si_tvalid : 1'b0;
+
+  assign mn_tdata = (CONF == 2'h00) ? si_tdata : 32'b0;
+  assign me_tdata = (CONF == 2'h01) ? si_tdata : 32'b0;
+  assign ms_tdata = (CONF == 2'h10) ? si_tdata : 32'b0;
+  assign mw_tdata = (CONF == 2'h11) ? si_tdata : 32'b0;
+endmodule
+/*
 module sfa_outSwitch (
   input   wire  [ 0 : 1]   CONF      ,
 
@@ -109,3 +144,4 @@ begin
   endcase
 end
 endmodule
+*/
